@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${pgcluster_namespace}
+---
+apiVersion: crunchydata.com/v1
+kind: Pgcluster
+metadata:
+  labels:
+    current-primary: ${pgcluster_name}
+    deployment-name: ${pgcluster_name}
+    name: ${pgcluster_name}
+    pg-cluster: ${pgcluster_name}
+    archive: "true"
+    pgo-backrest: "true"
+    pgo-version: "4.2.0"
+    crunchy-pgbadger: "false"
+    crunchy_collect: "false"
+    pgouser: "pgoadmin"
+    primary: "true"
+  name: ${pgcluster_name}
+  namespace: ${pgcluster_namespace}
+spec:
+  PrimaryStorage:
+    accessmode: ReadWriteOnce
+    fsgroup: "${pgcluster_fsgroup}"
+    size: 300M
+    storageclass: ${pgcluster_storageclass}
+    storagetype: dynamic
+  BackrestStorage:
+    accessmode: ReadWriteOnce
+    fsgroup: "${pgcluster_fsgroup}"
+    size: 300M
+    storageclass: ${pgcluster_storageclass}
+    storagetype: dynamic
+  ReplicaStorage:
+    accessmode: ReadWriteOnce
+    fsgroup: "${pgcluster_fsgroup}"
+    size: 300M
+    storageclass: ${pgcluster_storageclass}
+    storagetype: dynamic
+  ArchiveStorage:
+    accessmode: ReadWriteOnce
+    fsgroup: "${pgcluster_fsgroup}"
+    size: 300M
+    storageclass: ${pgcluster_storageclass}
+    storagetype: dynamic
+  ContainerResources:
+    limitscpu: ""
+    limitsmemory: ""
+    requestscpu: ""
+    requestsmemory: ""
+  ccpimage: crunchy-postgres
+  ccpimagetag: rhel7-9.6.16-4.1.1
+  clustername: ${pgcluster_name}
+  customconfig: ""
+  database: userdb
+  name: ${pgcluster_name}
+  namespace: ${pgcluster_namespace}
+  nodename: ""
+  policies: ""
+  port: "5432"
+  primaryhost: ${pgcluster_name}
+  primarysecretname: ${pgcluster_name}-primaryuser-secret
+  replicas: "0"
+  rootsecretname: ${pgcluster_name}-postgres-secret
+  secretfrom: ""
+  status: ""
+  strategy: "1"
+  user: testuser
+  userlabels:
+    crunchy_collect: "false"
+    pgo-version: "4.2.0"
+    pgouser: "pgoadmin"
+    pgo-backrest: "true"
+  usersecretname: ${pgcluster_name}-testuser-secret
